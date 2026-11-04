@@ -1,3 +1,9 @@
+## 4 November 2026 — Public preview metadata
+
+Completed canonical and matching X preview details while retaining the original app-specific 1200 by 630 artwork and all page body bytes.
+
+This changes public page identity/image metadata only. Original application code, narration, imagery, private records, accounts and business flows remain. Required host gates and actual deployed preview/source evidence are recorded on the scoped PR before claiming release. No paid tool, provider sign-in, outgoing post or message.
+
 ## 26 October 2026 — Optional shared public music
 
 Added a native public music entry to the existing lyrics and local studio headers, with reserved responsive space and the unchanged local shared-player package. The validated central catalogue loads when Music is opened; audio starts only from an explicit Play or track choice. Local uploads, transcription, source-recording selection, lyrics, per-track timing and video export are unchanged and remain separate from the public player. No project audio or text is uploaded or included in the public catalogue. The existing non-draft premium discovery revision remains a separate branch.
