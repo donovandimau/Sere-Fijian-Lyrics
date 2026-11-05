@@ -6,6 +6,7 @@ Canonical repository and existing public tool only; preserve all songs, local me
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
+| 2026-11-05 | Codex | Photorealistic phone-screen images in the existing link preview | `codex/photorealistic-phone-previews-20261105` |
 
 ## Done — newest first
 - 2026-11-04 — Codex — Phone inspection found a long public song-source URL extending the library to 478px at a 390px viewport. Scoped source-link wrapping keeps the address readable within the page; lyric text, source addresses and all app behavior remain unchanged.
