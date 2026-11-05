@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-05",
+  "tool": "Built-in image generation",
+  "purpose": "Photorealistic illustrative scenes within the existing link-preview phone screen.",
+  "contentStatus": "AI-generated illustrative scenes, not documentary evidence of actual stock, customers, transactions, farms or campaign activity.",
+  "sourceAssetPaths": [
+    "og-culture-fijian-lyrics-premium-20261103.jpg"
+  ],
+  "output": {
+    "format": "JPEG",
+    "width": 1200,
+    "height": 630,
+    "sha256": "302ebfefe7dc7de635dbc056e770a14604be7d6c355d3ded7b34e3f5d0bf55c4"
+  },
+  "prompt": "Use case: precise-object-edit. Edit this existing 1200x630 sere link preview. Add a large photographic header in the phone screen below Song lyrics: a real wooden acoustic guitar, studio microphone and headphones in warm soft natural light. Retain a compact Verse 1 lyrics-card area and original Play audio control below, with original wording. No new lyric text. Match phone screen perspective and clipping. Preserve ALL outside phone screen identically as closely as possible: original logo, exact headline and every other text, background gradient, floating badge, tags, footer URL, phone body and composition. New photo must be truly photorealistic with natural textures, never cartoons, flat vector illustrations or placeholders. No new branding or watermarks. Full landscape original composition, 1200x630 proportions."
+}
