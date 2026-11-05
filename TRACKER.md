@@ -6,6 +6,7 @@ Canonical repository and existing public tool only; preserve all songs, local me
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
+| 2026-11-05 | Codex | Dimau Group logo inside the link-preview phone footer | `codex/dimau-group-phone-preview-branding-20261105` |
 
 ## Done — newest first
 - 2026-11-05 — Codex — Replaced the phone-screen imagery in the existing link-preview JPEG with generated photorealistic illustrative scenes. Existing image URLs and 1200×630 JPEG format are retained. Image decoding/dimensions, asset hashes and source whitespace checks pass. Prompt and provenance are recorded in docs/phone-preview-photography-20261105.json; hosted release evidence is recorded on this image-only revision.
