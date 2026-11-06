@@ -6,6 +6,7 @@ Canonical repository and existing public tool only; preserve all songs, local me
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
+| 2026-11-06 | Codex | Add safe response headers | fix/security-response-headers-20261106 |
 
 ## Done — newest first
 - 2026-11-06 — Codex — Added robots.txt and a two-page canonical sitemap for the existing song library and lyric studio; improved the library search title. Song data, lyrics and media behavior are preserved. XML parse, canonical URL checks, six existing tests and git diff --check pass. Production verification is recorded on the scoped PR.
