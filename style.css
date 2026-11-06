@@ -12,6 +12,10 @@ header nav a{color:#fff}header nav a:focus{outline-color:#fff}.studio-link{displ
 
 /* Keep the optional public music entry beside native lyrics navigation. */
 .shared-music-header-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.sere-brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.sere-brand-row>[data-shared-music-slot]{flex:0 0 48px;margin-left:auto}
+.shared-music-header-actions nav{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;max-width:100%}
+.shared-music-header-actions nav a{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;white-space:nowrap;flex:0 0 auto}
 
 /* Quiet parent endorsement in the existing native footer. */
 [data-dimau-endorsement]{display:inline-flex;min-height:32px;align-items:center;gap:8px;font-size:12px;line-height:1.4;vertical-align:middle;color:inherit}[data-dimau-endorsement] img{display:block;width:20px;height:20px;max-width:none;object-fit:contain;flex:none;margin:0;border:0;box-shadow:none}
