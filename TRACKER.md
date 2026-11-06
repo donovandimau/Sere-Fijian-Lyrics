@@ -6,6 +6,7 @@ Canonical repository and existing public tool only; preserve all songs, local me
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
+| 2026-11-06 | Codex | Align existing header controls across desktop and phone; preserve native app actions | Current header revision |
 
 ## Done — newest first
 - 2026-11-05 — Codex — Added the genuine Dimau D mark and Dimau Group label inside the link-preview phone footer. Retained the photorealistic scenes and app-specific copy. Existing image addresses and 1200×630 JPEG format are retained. Visual review, JPEG decode/dimensions and git diff --check pass; exact prompt and logo provenance are in docs/phone-preview-branding-20261105.json. Hosted publication evidence is recorded on this image-only revision.
