@@ -19,10 +19,16 @@
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
 
+## Ideas carried over from fijian-lyrics (not started)
+- More traditional and public-domain sere
+- User song submissions with moderation
+- Links to Fiji Culture Corner and FijiLearn
+
 ## Do not change
 - Song records, lyrics, local media, transcription and export behavior
 
 ## Done — newest first
+- 2026-11-07 — Claude — Folded in the old `fijian-lyrics` repo (Donovan's decision). Its four songs were already here with identical Fijian lyrics and English translations, and its Connect files were identical. Brought over the only missing parts: a song type (Anthem, Farewell, Welcome, Folk) and a YouTube link per song, shown on each song card; type is also searchable. 6/6 tests pass; checked at 375px and 1280px with no sideways scroll. `fijian-lyrics` is no longer worked on.
 - 2026-11-07 — Claude — Added AGENTS.md / CLAUDE.md pointing every AI to this tracker; added the standard tracker header, links and current state. Existing entries kept unchanged.
 - 2026-11-06 — Codex — Added safe response headers (nosniff and strict-origin-when-cross-origin), preserving existing routing, caching and embedding. JSON and baseline JavaScript/CSS MIME checks pass; hosted checks and live readback belong to the scoped security PR.
 - 2026-11-06 — Codex — Aligned existing music at the right of the song-library and studio headers and gave navigation links at least 44px tap height. All six lyric/media regression tests and whitespace checks pass. Local 390px and 1440px checks on both pages show a 48px music entry and no page overflow. Song records, lyrics, local media, transcription and exports are unchanged; hosted release evidence follows on the scoped PR.
