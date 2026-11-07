@@ -1,13 +1,29 @@
-# TRACKER — sere
+# TRACKER — Sere (Fijian song lyrics)
+
+> **Every AI: read this whole file before you start any work on this project, and update it before you finish — in the same commit as your work.**
+> Newest entries go at the TOP of each section. If something is listed under *In progress* or *Done*, do not redo it: carry it on, or check with Donovan.
+> Work that applies to **every** project (shared rules, rollouts, new-project checklist) lives on the main board: `donovandimau/dimau-ops` → `ALL-PROJECTS.md`. Check it too, and tick this project off there when you apply a rollout here.
 
 ## Project
-Canonical repository and existing public tool only; preserve all songs, local media, transcription and export behavior.
+- Ops Room card: `platform-culture-fijian-lyrics`
+- Code: https://github.com/donovandimau/sere
+- Live: https://fijian-lyrics-site.vercel.app
+- Scope: canonical repository and existing public tool only; preserve all songs, local media, transcription and export behavior.
+
+## Current state
+- Status: Ready to Test — live four-song Sere catalogue
+- Blocker: full catalogue conversion incomplete (see Ops Room card)
+
 
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
 
+## Do not change
+- Song records, lyrics, local media, transcription and export behavior
+
 ## Done — newest first
+- 2026-11-07 — Claude — Added AGENTS.md / CLAUDE.md pointing every AI to this tracker; added the standard tracker header, links and current state. Existing entries kept unchanged.
 - 2026-11-06 — Codex — Added safe response headers (nosniff and strict-origin-when-cross-origin), preserving existing routing, caching and embedding. JSON and baseline JavaScript/CSS MIME checks pass; hosted checks and live readback belong to the scoped security PR.
 - 2026-11-06 — Codex — Aligned existing music at the right of the song-library and studio headers and gave navigation links at least 44px tap height. All six lyric/media regression tests and whitespace checks pass. Local 390px and 1440px checks on both pages show a 48px music entry and no page overflow. Song records, lyrics, local media, transcription and exports are unchanged; hosted release evidence follows on the scoped PR.
 - 2026-11-06 — Codex — Added robots.txt and a two-page canonical sitemap for the existing song library and lyric studio; improved the library search title. Song data, lyrics and media behavior are preserved. XML parse, canonical URL checks, six existing tests and git diff --check pass. Production verification is recorded on the scoped PR.
