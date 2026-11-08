@@ -5,7 +5,7 @@
 > Work that applies to **every** project (shared rules, rollouts, new-project checklist) lives on the main board: `donovandimau/dimau-ops` → `ALL-PROJECTS.md`. Check it too, and tick this project off there when you apply a rollout here.
 
 ## Project
-- Ops Room card: `platform-culture-fijian-lyrics`
+- Ops Room card: `culture-fijian-lyrics`
 - Code: https://github.com/donovandimau/sere
 - Live: https://fijian-lyrics-site.vercel.app
 - Scope: canonical repository and existing public tool only; preserve all songs, local media, transcription and export behavior.
@@ -28,6 +28,7 @@
 - Song records, lyrics, local media, transcription and export behavior
 
 ## Done — newest first
+- 2026-11-08 — Claude — Tracker catch-up from git history: corrected the Ops Room card id to `culture-fijian-lyrics`, checked against the Ops Room project list.
 - 2026-11-07 — Claude — Folded in the old `fijian-lyrics` repo (Donovan's decision). Its four songs were already here with identical Fijian lyrics and English translations, and its Connect files were identical. Brought over the only missing parts: a song type (Anthem, Farewell, Welcome, Folk) and a YouTube link per song, shown on each song card; type is also searchable. 6/6 tests pass; checked at 375px and 1280px with no sideways scroll. `fijian-lyrics` is no longer worked on.
 - 2026-11-07 — Claude — Added AGENTS.md / CLAUDE.md pointing every AI to this tracker; added the standard tracker header, links and current state. Existing entries kept unchanged.
 - 2026-11-06 — Codex — Added safe response headers (nosniff and strict-origin-when-cross-origin), preserving existing routing, caching and embedding. JSON and baseline JavaScript/CSS MIME checks pass; hosted checks and live readback belong to the scoped security PR.
