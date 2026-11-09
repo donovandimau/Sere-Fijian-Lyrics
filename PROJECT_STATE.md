@@ -1,11 +1,56 @@
-# Project state (2026-10-23)
-- MVP has 4 songs. All four are marked "Lyrics pending rights check" and show only the title, credit and source.
-- Anthem: an official text exists at foreignaffairs.gov.fj, but the lyricist (M. Prescott) may still hold copyright, so it needs a rights check.
-- Isa Lei: authorship is disputed and the 1932 arrangement is credited, so rights are unclear.
-- Bula Maleya: only a blog source was found.
-- Loma ni Buca: no reputable source has been found.
-- Next step: confirm rights, then fill in the lyrics fields.
+## 4 November 2026 — Public preview metadata
 
-## Catalogue draft (branch catalogue-draft)
-- `catalogue.js` holds 107 link-only entries with metadata only and no lyric text. Sources are LyricsTranslate's Fijian language index (52 entries) and SingPraises.net's Fijian texts index (55 hymns that SingPraises marks public domain).
-- The public-domain flag for the hymns refers to the original English text. The Fijian translations may have their own rights, so verify before adding any text.
+Completed canonical and matching X preview details while retaining the original app-specific 1200 by 630 artwork and all page body bytes.
+
+This changes public page identity/image metadata and wraps long public source addresses in the library at phone width. Original application code, narration, imagery, private records, accounts and business flows remain. Required host gates and actual deployed preview/source evidence are recorded on the scoped PR before claiming release. No paid tool, provider sign-in, outgoing post or message.
+
+## 26 October 2026 — Optional shared public music
+
+Added a native public music entry to the existing lyrics and local studio headers, with reserved responsive space and the unchanged local shared-player package. The validated central catalogue loads when Music is opened; audio starts only from an explicit Play or track choice. Local uploads, transcription, source-recording selection, lyrics, per-track timing and video export are unchanged and remain separate from the public player. No project audio or text is uploaded or included in the public catalogue. The existing non-draft premium discovery revision remains a separate branch.
+
+Source-preservation and frozen-package checks pass locally. Existing static hosting serves the six local assets; public streams require network. Full app/browser and publication checks remain with the release pipeline.
+
+## 25 October 2026 — Audio and video call entry points
+
+Owner requested the complete shared calling rollout, including video chat. This isolated revision starts from current main and adds only the shared Connect v2 entry points: audio and video route to the Sota communications hub with an app slug and fixed call mode. App accounts, private records, page URLs and tokens are not forwarded; the launcher does not start camera/microphone capture. Existing unrelated saved revisions and holds remain untouched.
+
+Validation: canonical launcher syntax and nine DOM/URL/privacy/keyboard tests pass. Entry changes preserve prior source outside the added control. Hosted app and native two-user call verification remain with the parent rollout; no production call or publication is claimed here. Authenticated Ops continuity/lease receipts are not available to this child; no such receipt is claimed. Next: verify the exact preview and shared native call flow, then release this isolated change when the parent confirms readiness.
+
+## 25 October 2026 — App companion installation
+
+Owner resumed the portfolio companion rollout with “do it”. Added byte-identical original Dimau Companion v1.0.1 assets and app-specific entry points from the shared platform standard. Local task guides, movable characters, appearance settings and read-aloud are available without a model provider. No account, payment, private-record or provider access is added. Open-ended AI remains disconnected unless a host explicitly supplies its existing service; held assistant pilots remain unchanged.
+
+Validation: shared package's 12 tests pass; entry changes preserve original source outside the loader insertion. Host build/deployment and rendered results are tracked on this change's GitHub revision, not claimed by this source entry. Direct GitHub/Vercel execution is authorised by the current owner request; authenticated Ops memory, continuity, task and checkpoint operations remain unavailable, so no such receipts are claimed. Existing unrelated revision branches and holds are preserved. Next: verify the exact hosted companion and record the actual result.
+
+## 2026-10-25 — Shared audio-reactive music visuals (review revision)
+
+Owner asks to research the first ten music visualiser search pages and build selected features into Sota Kece, the shared player, Sere and Dimau Studios. Add an original shared Canvas/Web Audio engine: spectrum with peak caps, waveform, halo, layered ocean waves; four palettes; intensity; fullscreen; gesture-only activation; low-data, visibility and reduced-motion controls. Studios/Sere include bounded audio-backed WebM capture, and Sere reuses the same source for lyric-video export. Current artwork, songs/catalogue, source credits, accounts/storage and unrelated saved revisions are preserved. Public Maps exposes this as an optional disclosure within music, keeping its ordinary interface simple.
+
+Source/implementation, 100-result screening, actual checks and limitations: `docs/MUSIC_VISUALISERS_2026-10-25.md`. Focused media-graph checks and real local Chromium playback/export/390px checks pass. Exact remote CI and preview receipts belong to the current scoped PR; no production publication or authenticated Ops receipt is pre-claimed. Existing review holds remain. Next: finish exact-head hosted checks and review the working candidate.
+
+# Sere project state — 24 October 2026
+
+Current amendment: explicit Lyric video / Just the lyrics modes, editable automatic transcription and plain-text copy/TXT download. Text exports do not require video timing; both modes retain the same audio, words and timing. Resumed saved PR2 candidate `e708c6de950091598059d88a7d23e02f49a41265` on task726 lease2. Production publication remains held pending exact owner approval; production is `68099fac871582b85877143b2c8e539cde8fcb72`.
+
+- Studio: local audio drop/upload/folder and independent track projects, supplied/imported lyrics, optional local ASR, editable/tap timing, three themes and three aspect ratios, actual audio-backed video export with cancellation, project save/open and LRC/VTT export. Curated direct source recordings can be loaded through browser CORS with cancellation and errors that preserve the project.
+- Local first-load transcription succeeded on the official11-second speech fixture. This verifies the browser/model pipeline, not Fijian singing accuracy. Whisper has no Fijian language token.
+- All107 saved catalogue source pages were retrieved:72 Firecrawl and35 direct HTTP after Firecrawl credits ended. All original source pages returned200;107 Fijian source links and31 entries with recording-source links were found. Recording links were not playback-tested; linked Fijian-instance targets were not exhaustively fetched.
+- After the owner clarified “all Fijian songs”, source-index discovery added388 records:495 entries now searchable/selectable, with107 original IDs preserved and409 entries carrying recording links. All18 indexed Fijian collection pages and the58-entry LyricsTranslate Fijian index were checked. Four unindexed collections, historical editions and other music sources remain coverage gaps. This is a bounded source index, not all worldwide Fijian music.
+- Four supplied complete lyric records remain intact. No new bulk full lyric texts or audio files are bundled, and catalogue entries are not finished videos. Recordings and words/timings are required for conversion.
+- Actual6-second local test export contains VP8video+audibleOpusaudio, correct6.000000duration metadata and0–6seekability; frames show the correct two lyric lines. Parser, import, validation, cancellation, missing-timestamp, per-track isolation and mobile-layout checks pass. Hosted core preview completed a real export; its tool cannot retrieve Blob downloads. Final preview/encoding checks are recorded in Ops artifacts/handover.
+- Canonical existing GitHub/Vercel identities are unchanged. No new app, backend, service credentials, storage, account or protection grants were created.
+
+Previous approved baseline:
+
+- Four songs have Fijian lyrics and the supplied English translations: Meda Dau Doka, Isa Lei, Bula Maleya and Loma ni Buca.
+- Song text is restored from the owner's existing `fijian-lyrics/data/songs.json` catalogue at `e42a939083f8a15e7165868cbb25c660bb745246`; no external lyric text was fetched.
+- The warning placeholders, legal-status notes and old footer are removed. Song credits and reference links remain.
+- The owner explicitly instructed publication of this revision on 24 October 2026, including the Sere rename.
+- Canonical repository: `donovandimau/sere` (existing repository ID1431143213). Existing Vercel project ID: `prj_dK69PpFn8gKtMym8KW4TCgrODWoE`.
+- The separate historical repository and parked catalogue draft are preserved.
+
+
+
+##30October2026 — native identity and quiet parent endorsement
+
+Current owner all-apps branding preserves the existing Sere text wordmarks, catalogue, lyrics, focused studio and shared public music. Only the existing route footers gain the exact current Dimau owner artwork at20px with Part of Dimau, using scoped footer styling. No product art is invented; unrelated held PR3 remains closed unmerged with its branch/history intact. Exact reversible preparation passed;390/1440 hosted/provider verification is the technical publication guard.

@@ -4,6 +4,18 @@ header{background:var(--teal);color:#fff;padding:1.25rem 1rem}header h1{margin:0
 label{display:block;font-weight:600}input{width:100%;padding:.75rem;font-size:1rem;border:2px solid var(--teal);border-radius:.5rem}
 input:focus,a:focus{outline:3px solid var(--coral);outline-offset:2px}a{color:#0a6b6b}
 #list{padding-left:1.2rem}article{background:#fff;border-left:5px solid var(--coral);border-radius:.5rem;padding:1rem;margin:1rem 0}
-.pending{display:inline-block;background:var(--coral);color:#1d2526;font-weight:700;padding:.15rem .5rem;border-radius:.3rem}
 pre{white-space:pre-wrap;font:inherit}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:#fff;padding:.5rem}
 footer{text-align:center;padding:1rem;font-size:.9rem}
+header nav a{color:#fff}header nav a:focus{outline-color:#fff}.studio-link{display:inline-block;background:var(--teal);color:#fff;border-radius:.45rem;padding:.5rem .8rem;text-decoration:none}.catalogue-card{border-left-color:var(--teal);padding:.8rem 1rem}.catalogue-card h3{margin:0}.catalogue-card p{margin:.35rem 0;font-size:.88rem}#catalogue{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.75rem}#catalogue article{margin:0}
+.catalogue-pages{display:flex;gap:.75rem;align-items:center;margin:1rem 0;font-size:.85rem}.catalogue-pages button{font:inherit;padding:.4rem .7rem;border:1px solid var(--teal);border-radius:.35rem;background:#fff;color:var(--ink);cursor:pointer}.catalogue-pages button:disabled{opacity:.45;cursor:default}
+
+
+/* Keep the optional public music entry beside native lyrics navigation. */
+.shared-music-header-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.sere-brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.sere-brand-row>[data-shared-music-slot]{flex:0 0 48px;margin-left:auto}
+.shared-music-header-actions nav{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;max-width:100%}
+.shared-music-header-actions nav a{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;white-space:nowrap;flex:0 0 auto}
+
+/* Quiet parent endorsement in the existing native footer. */
+[data-dimau-endorsement]{display:inline-flex;min-height:32px;align-items:center;gap:8px;font-size:12px;line-height:1.4;vertical-align:middle;color:inherit}[data-dimau-endorsement] img{display:block;width:20px;height:20px;max-width:none;object-fit:contain;flex:none;margin:0;border:0;box-shadow:none}

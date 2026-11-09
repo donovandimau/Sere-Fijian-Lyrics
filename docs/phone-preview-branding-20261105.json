@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-05",
+  "tool": "Built-in image generation, compositing edit",
+  "purpose": "Place the existing Dimau D mark and words Dimau Group inside the white footer of the link-preview phone.",
+  "logoReference": {
+    "repository": "donovandimau/dimau-group",
+    "path": "public/dimau-owner-logo-20260920.png",
+    "sha256": "6f0562b1e3bf8ad922d0e8ee0863e388ad838a4604cce2d310579d177cbc06b0"
+  },
+  "contentStatus": "Existing AI-generated illustrative photography retained; not documentary evidence of actual stock, customers, transactions, farms or campaign activity.",
+  "sourceAssetPaths": [
+    "og-culture-fijian-lyrics-premium-20261103.jpg"
+  ],
+  "output": {
+    "format": "JPEG",
+    "width": 1200,
+    "height": 630,
+    "sha256": "105ffd09a444a4062f8b5bca8ae6f7e1752b1a804aa55acdbce9982befedb6e6"
+  },
+  "prompt": "Use case: compositing. Image 1 is the finished sere link-preview artwork to edit; Image 2 is the genuine approved Dimau D symbol to insert. Add a small horizontal footer lockup INSIDE the phone screen, below the player bar at the very bottom of the phone. Reproduce the exact blue D and grey ascending bars from Image 2 on the left, and exact words \"Dimau Group\" in small dark navy sans-serif beside it on the right. Reduce the height of the grey lyric-placeholder card minimally and move the player bar up about 40 pixels to expose a small blank white footer. Keep all the placeholder lines and the entire player. Use a compact 28-pixel tall D mark and 19-pixel label, combined width about 180 pixels. Center the lockup in the white phone footer, entirely visible above the bottom crop with a small margin, matching the phone tilt and perspective. Preserve all existing photos, content, copy, UI, app logo, phone frame, colors, background, shadows and overall composition. Alter only the lower phone footer area as needed for this lockup. Never add a logo outside the phone; no box or badge behind the logo, no extra slogan. Keep same wide aspect ratio as Image 1."
+}
