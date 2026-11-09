@@ -28,6 +28,7 @@
 - Song records, lyrics, local media, transcription and export behavior
 
 ## Done — newest first
+- 2026-11-09 — Claude — Premium redesign of the song library (Donovan: "engaging premium layout", "none of the boxes opens up"). Sky-blue glass look, Manrope/Lexend, hero search, song cards with artwork tiles. Every song and catalogue card now opens a full view (lyrics Fijian + English side by side, YouTube, source, Create a lyric video); links like #meda-dau-doka open the song directly. Song data, studio, transcription and exports untouched. 6/6 tests pass; checked at 1280px and 390px, no sideways scroll, no page errors.
 - 2026-11-08 — Claude — Tracker catch-up from git history: corrected the Ops Room card id to `culture-fijian-lyrics`, checked against the Ops Room project list.
 - 2026-11-07 — Claude — Folded in the old `fijian-lyrics` repo (Donovan's decision). Its four songs were already here with identical Fijian lyrics and English translations, and its Connect files were identical. Brought over the only missing parts: a song type (Anthem, Farewell, Welcome, Folk) and a YouTube link per song, shown on each song card; type is also searchable. 6/6 tests pass; checked at 375px and 1280px with no sideways scroll. `fijian-lyrics` is no longer worked on.
 - 2026-11-07 — Claude — Added AGENTS.md / CLAUDE.md pointing every AI to this tracker; added the standard tracker header, links and current state. Existing entries kept unchanged.
