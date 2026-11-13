@@ -43,7 +43,7 @@
     };
     function icon(name, parent, x, y, size, color) { var g = el('g', { transform: 'translate(' + x + ',' + y + ') scale(' + size / 48 + ')', fill: '#fff', color: color || '#000' }, parent); g.innerHTML = ICON[name] || ICON.star; return g; }
     function slot(parent, key, id, x, y, size, color, fallback) {
-      var g = el('g', { 'data-slot': key.replace('*', id) }, parent); icon(fallback, g, x, y, size, color);
+      var g = el('g', { 'data-slot': key.split('*').join(id) }, parent); icon(fallback, g, x, y, size, color);
       var src = artSrc(key, id); if (!src) return g; var probe = new Image();
       probe.onload = function () { g.innerHTML = ''; el('image', { href: src, x: x, y: y, width: size, height: size }, g); };
       probe.src = src; return g;
