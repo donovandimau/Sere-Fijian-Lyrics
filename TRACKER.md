@@ -18,6 +18,7 @@
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
+| 2026-11-14 | Codex | TRACKER merge conflict prevention | agent/codex/tracker-merge-prevention-sere-fijian-lyrics/1 |
 
 ## Ideas carried over from fijian-lyrics (not started)
 - More traditional and public-domain sere
