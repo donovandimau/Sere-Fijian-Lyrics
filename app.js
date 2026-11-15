@@ -2,6 +2,9 @@ const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&g
 const $=id=>document.getElementById(id);
 const q=$("q"),box=$("songs"),count=$("count"),dlg=$("song-dialog"),dlgBody=$("dlg-body");
 const SONG_LIST=window.SONGS||[],CAT=window.CATALOGUE||[];
+const CATS=window.SERE_CATEGORIES;let fG="",fO="",fL="";
+const pass=s=>!s.cat||((!fG||s.cat.genre===fG)&&(!fO||s.cat.occasions.includes(fO))&&(!fL||s.cat.languages.includes(fL)));
+const catText=s=>s.cat?[s.cat.style,CATS.genreName(s.cat.genre),...s.cat.occasions.map(CATS.occasionName)].join(" "):"";
 const pageSize=24;let cataloguePage=0;
 const hues=[200,188,214,176,226,194];
 const hue=s=>hues[[...String(s)].reduce((a,c)=>a+c.charCodeAt(0),0)%hues.length];
@@ -10,7 +13,7 @@ $("stat-songs").textContent=SONG_LIST.length;$("stat-cat").textContent=CAT.lengt
 $("catalogue-overview").textContent=`${CAT.length} song entries and their sources.`;
 const first=t=>String(t||"").split("\n").find(l=>l.trim())||"";
 function featureCard(s){return `<button type="button" class="card feature" data-song="${esc(s.id)}" style="--h:${hue(s.id)}"><span class="art">${initials(s.title)}</span><span class="meta">${s.type?`<span class="chip">${esc(s.type)}</span>`:""}<span class="title">${esc(s.title)}</span><span class="artist">${esc(s.artist)}</span>${s.lyricsFijian?`<span class="line" lang="fj">“${esc(first(s.lyricsFijian))}”</span>`:""}</span><span class="open">Open lyrics →</span></button>`}
-function catCard(s){return `<button type="button" class="card cat" data-cat="${esc(s.id)}" style="--h:${hue(s.id)}"><span class="art sm">${initials(s.title)}</span><span class="meta"><span class="title">${esc(s.title)}</span><span class="artist">${esc(s.artist)}</span></span></button>`}
+function catCard(s){return `<button type="button" class="card cat" data-cat="${esc(s.id)}" style="--h:${hue(s.id)}"><span class="art sm">${initials(s.title)}</span><span class="meta">${s.cat?`<span class="chip">${esc(s.cat.style||CATS.genreName(s.cat.genre))}</span>`:""}<span class="title">${esc(s.title)}</span><span class="artist">${esc(s.artist)}</span></span></button>`}
 const link=(href,label,cls="")=>href?`<a class="btn ${cls}" href="${esc(href)}" target="_blank" rel="noopener">${label}</a>`:"";
 function songView(s){return `<div class="dlg-hero" style="--h:${hue(s.id)}"><span class="art lg">${initials(s.title)}</span><div>${s.type?`<span class="chip">${esc(s.type)}</span>`:""}<h2 id="dlg-title">${esc(s.title)}</h2><p class="artist">${esc(s.artist)}</p>${s.credit?`<p class="credit">${esc(s.credit)}</p>`:""}</div></div>
 <div class="actions"><a class="btn primary" href="studio.html?song=${encodeURIComponent(s.id)}">Create a lyric video</a>${s.youtube?link(s.youtube,s.youtube.includes("/results?")?"Find on YouTube":"Listen on YouTube"):""}</div>
@@ -26,9 +29,9 @@ dlg.addEventListener("click",e=>{if(e.target===dlg||e.target.closest(".dlg-close
 document.addEventListener("click",e=>{const c=e.target.closest("[data-song],[data-cat]");if(!c)return;
  if(c.dataset.song){const s=SONG_LIST.find(x=>x.id===c.dataset.song);s&&openView(songView(s),s.id)}else{const s=CAT.find(x=>x.id===c.dataset.cat);s&&openView(catView(s),s.id)}});
 function fromHash(){const id=decodeURIComponent(location.hash.slice(1));if(!id)return;const s=SONG_LIST.find(x=>x.id===id);if(s)return openView(songView(s));const c=CAT.find(x=>x.id===id);if(c)openView(catView(c))}
-function render(){const t=q.value.trim().toLowerCase();const r=SONG_LIST.filter(s=>[s.title,s.artist,s.type,s.lyricsFijian,s.translationEnglish].join(" ").toLowerCase().includes(t));
+function render(){const t=q.value.trim().toLowerCase();const r=SONG_LIST.filter(s=>pass(s)&&[s.title,s.artist,s.type,s.lyricsFijian,s.translationEnglish,catText(s)].join(" ").toLowerCase().includes(t));
 count.textContent=`${r.length} song${r.length==1?"":"s"}`;box.innerHTML=r.map(featureCard).join("")||'<p class="empty">No full-lyric songs match. Try the catalogue below.</p>';
-const catalogue=CAT.filter(s=>[s.title,s.artist,s.genre].join(" ").toLowerCase().includes(t));
+const catalogue=CAT.filter(s=>pass(s)&&[s.title,s.artist,s.genre,catText(s)].join(" ").toLowerCase().includes(t));
 const pages=Math.max(1,Math.ceil(catalogue.length/pageSize));cataloguePage=Math.max(0,Math.min(cataloguePage,pages-1));
 $("catalogue-count").textContent=`${catalogue.length} entr${catalogue.length===1?"y":"ies"}`;
 $("catalogue-page").textContent=`Page ${cataloguePage+1} of ${pages}`;
@@ -37,4 +40,10 @@ $("catalogue").innerHTML=catalogue.slice(cataloguePage*pageSize,(cataloguePage+1
 q.addEventListener("input",()=>{cataloguePage=0;render()});
 const jump=d=>{cataloguePage+=d;render();$("catalogue-heading").scrollIntoView({behavior:"smooth",block:"start"})};
 $("catalogue-previous").addEventListener("click",()=>jump(-1));$("catalogue-next").addEventListener("click",()=>jump(1));
-window.addEventListener("hashchange",fromHash);render();fromHash();
+function buildFilters(){if(!CATS)return;const gc=CATS.counts("genre"),oc=CATS.counts("occasions"),lc=CATS.counts("languages");
+ const gb=$("f-genre");gb.innerHTML=[["","All songs",SONG_LIST.length+CAT.length],...CATS.genres.filter(g=>gc[g[0]]).map(g=>[g[0],g[1],gc[g[0]]])].map(([k,n,c])=>`<button type="button" class="fchip" data-g="${k}" aria-pressed="${k===fG}">${esc(n)} <span>${c}</span></button>`).join("");
+ gb.onclick=e=>{const b=e.target.closest("[data-g]");if(!b)return;fG=b.dataset.g;gb.querySelectorAll(".fchip").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));cataloguePage=0;render()};
+ $("f-occ").innerHTML='<option value="">Any occasion</option>'+CATS.occasions.filter(o=>oc[o[0]]).map(o=>`<option value="${o[0]}">${esc(o[1])} (${oc[o[0]]})</option>`).join("");
+ $("f-lang").innerHTML='<option value="">Any language</option>'+Object.entries(lc).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`<option value="${esc(k)}">${esc(k)} (${c})</option>`).join("");
+ $("f-occ").onchange=e=>{fO=e.target.value;cataloguePage=0;render()};$("f-lang").onchange=e=>{fL=e.target.value;cataloguePage=0;render()}}
+buildFilters();window.addEventListener("hashchange",fromHash);render();fromHash();
