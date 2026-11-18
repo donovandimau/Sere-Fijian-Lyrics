@@ -22,7 +22,6 @@ Added TRACKER.md merge=union while preserving other Git attributes. Git attribut
 ## In progress — claim a task here BEFORE you start it
 | Started | AI | Task | Branch / PR |
 |---|---|---|---|
-| 2026-11-18 | Claude | Sweep fixes: checks on GitHub — PR open, awaiting merge | claude/sweep-checks |
 
 ## Ideas carried over from fijian-lyrics (not started)
 - More traditional and public-domain sere
