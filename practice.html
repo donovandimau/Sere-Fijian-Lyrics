@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Practise — Sere</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=20261109"><link rel="stylesheet" href="practice.css?v=20261119"><link rel="stylesheet" href="/shared-music/launcher.css?v=20261026-1">
+<meta name="description" content="Practise a Fijian song: pick your key, get the starting note, see guitar and ukulele chord shapes with a capo guide, play along on a keyboard and keep time with a click.">
+<meta property="og:title" content="Practise — Sere">
+<meta property="og:description" content="Key, starting note, chords, guitar and ukulele shapes, keyboard, sol-fa and a click track for choir and band practice.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sere.dimau-fintech.com/practice.html">
+<meta property="og:image" content="https://sere.dimau-fintech.com/og-culture-fijian-lyrics-premium-20261103.jpg">
+<meta property="og:site_name" content="Sere">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://sere.dimau-fintech.com/practice.html">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4f4c5369aae141099c17ea319c3fb7b9"}'></script>
+</head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="topbar"><div class="topbar-in"><a class="brand" href="index.html" aria-label="Sere home"><span class="brand-mark" aria-hidden="true">♪</span><span class="brand-name">Sere</span></a><div class="shared-music-header-actions"><nav aria-label="Main"><a href="index.html">Song library</a><a href="practice.html" aria-current="page">Practise</a><a href="studio.html">Create a lyric video</a><a href="studio.html?output=lyrics">Transcribe lyrics</a></nav><span data-shared-music-slot></span></div></div></header>
+<main id="main" class="pr">
+<section class="pr-head">
+  <p class="eyebrow">Ako · Practise</p>
+  <h1 id="pr-title">Practise a song</h1>
+  <p id="pr-sub" class="pr-sub">Pick the key your choir or band sings in. Get the starting note, see the chords and shapes, and keep time.</p>
+  <p id="pr-song-links" class="pr-links" hidden></p>
+</section>
+
+<section class="pr-card" aria-labelledby="key-h">
+  <div class="pr-card-head"><h2 id="key-h">1. Key</h2><p id="capo-line" class="pr-note"></p></div>
+  <div id="keys" class="pr-keys" role="group" aria-label="Key"></div>
+  <div class="pr-row">
+    <button type="button" id="give-note" class="btn primary">Get the starting note</button>
+    <span class="pr-note">Plays the home chord, then <i>doh</i>.</span>
+  </div>
+  <div id="solfa" class="pr-solfa" role="group" aria-label="Sol-fa notes in this key"></div>
+</section>
+
+<section class="pr-card" aria-labelledby="chord-h">
+  <div class="pr-card-head"><h2 id="chord-h">2. Chords</h2><p class="pr-note">The main chords of this key. Most hymns use these, but check your songbook or music leader for each song's own chords.</p></div>
+  <div id="chords" class="pr-chords" role="group" aria-label="Chords in this key"></div>
+  <div class="pr-instr" role="tablist" aria-label="Instrument">
+    <button type="button" role="tab" id="tab-guitar" aria-selected="true" aria-controls="shapes">Guitar</button>
+    <button type="button" role="tab" id="tab-uke" aria-selected="false" aria-controls="shapes">Ukulele</button>
+    <button type="button" role="tab" id="tab-keys" aria-selected="false" aria-controls="shapes">Keyboard</button>
+  </div>
+  <div id="shapes" class="pr-shapes" role="tabpanel"></div>
+</section>
+
+<section class="pr-card" aria-labelledby="time-h">
+  <div class="pr-card-head"><h2 id="time-h">3. Keep time</h2><p class="pr-note">A practice loop of the main chords, not this song's own chords.</p></div>
+  <div class="pr-row pr-time">
+    <label>Speed <input id="bpm" type="number" inputmode="numeric" min="40" max="200" value="80"> <span>beats a minute</span></label>
+    <label>Beats in a bar <select id="beats"><option value="4">4</option><option value="3">3</option><option value="2">2</option></select></label>
+    <label>Loop <select id="loop"></select></label>
+  </div>
+  <div class="pr-row">
+    <label class="pr-check"><input type="checkbox" id="use-chords" checked> Chords</label>
+    <label class="pr-check"><input type="checkbox" id="use-click" checked> Click</label>
+    <button type="button" id="play" class="btn primary" aria-pressed="false">▶ Play</button>
+    <div id="beat-dots" class="pr-dots" aria-hidden="true"></div>
+    <span id="now-chord" class="pr-now" aria-live="polite"></span>
+  </div>
+</section>
+
+<section id="words" class="pr-card" aria-labelledby="words-h" hidden>
+  <div class="pr-card-head"><h2 id="words-h">Words</h2></div>
+  <pre id="words-text" lang="fj"></pre>
+</section>
+</main>
+<footer>Sere · Fijian songs <span data-dimau-endorsement><img src="https://dimau-ops.vercel.app/dimau-owner-logo-20260920.png" alt="" width="20" height="20"><span>Dimau Group</span></span></footer>
+<script src="songs.js"></script><script src="catalogue.js"></script><script src="practice.js?v=20261119"></script>
+<script src="/dimau-companion.js?v=20261025b" data-app="sere" defer></script>
+<script src="/dimau-connect.js?v=20261025-video" data-app="sere" data-label="Sere" defer></script>
+<script src="/shared-music/launcher.js?v=20261026-1" defer></script>
+</body></html>

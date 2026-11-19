@@ -1,0 +1,51 @@
+/* Sere · Practise page. Uses the site's sky-blue glass look (style.css tokens). */
+.pr{max-width:56rem}
+.pr-head{text-align:center;padding:2rem 0 1rem}
+.pr-head h1{margin:.2rem 0 .4rem;font-size:clamp(1.7rem,5vw,2.4rem);color:var(--deep);line-height:1.15}
+.pr-sub{margin:0 auto;max-width:36rem;color:var(--muted)}
+.pr-links{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0 0}
+.pr-card{background:var(--glass);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:1rem;margin:0 0 1rem;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pr-card-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.25rem 1rem;margin-bottom:.75rem}
+.pr-card h2{margin:0;font-size:1.2rem;color:var(--deep)}
+.pr-note{margin:0;font-size:.88rem;color:var(--muted)}
+.pr-row{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:.75rem}
+.pr button{font:inherit;cursor:pointer}
+.pr-keys{display:grid;grid-template-columns:repeat(8,1fr);gap:.4rem}
+.pr-key,.pr-chord,.pr-sol,.pr-shape,.pr-instr button{min-height:48px;border-radius:14px;border:1px solid rgba(11,58,91,.15);background:#fff;color:var(--deep)}
+.pr-key{font:800 1.05rem Manrope,system-ui,sans-serif}
+.pr-key[aria-pressed=true],.pr-instr button[aria-selected=true]{background:var(--deep);border-color:var(--deep);color:#fff}
+.pr-solfa{display:grid;grid-template-columns:repeat(8,1fr);gap:.35rem;margin-top:.75rem}
+.pr-sol{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.3rem 0;line-height:1.2}
+.pr-sol b{font:800 1rem Manrope,system-ui,sans-serif}.pr-sol span{font-size:.75rem;color:var(--muted)}
+.pr-chords{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.pr-chord{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.4rem 0;line-height:1.2}
+.pr-chord b{font:800 1.15rem Manrope,system-ui,sans-serif}.pr-chord span{font-size:.75rem;color:var(--muted)}
+.pr-key:hover,.pr-chord:hover,.pr-sol:hover,.pr-shape:hover{background:var(--ice)}
+.pr-key[aria-pressed=true]:hover{background:var(--deep)}
+.pr-instr{display:flex;gap:.4rem;margin:1rem 0 .6rem}
+.pr-instr button{flex:1;font-weight:600}
+.pr-shape-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin-top:.6rem}
+.pr-shape{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.5rem .25rem}
+.pr-shape b{font:800 1rem Manrope,system-ui,sans-serif}.pr-shape span{font-size:.72rem;color:var(--muted);min-height:1em}
+.pr-svg{width:100%;max-width:120px;height:auto}
+.pr-string,.pr-fret{stroke:#4C6A80;stroke-width:1.2}.pr-nut{fill:var(--deep)}.pr-capo{fill:#C2410C}
+.pr-dot{fill:var(--deep)}.pr-open{fill:none;stroke:var(--deep);stroke-width:1.6}.pr-mark{fill:#9B2C2C;font:700 14px Lexend,system-ui,sans-serif}
+.pr-kb{position:relative;display:flex;height:150px;overflow-x:auto;padding-bottom:4px;margin-top:.6rem;-webkit-overflow-scrolling:touch}
+.pr-wk{flex:0 0 44px;height:100%;border-radius:0 0 10px 10px!important;border:1px solid #9fb5c5!important;background:#fff;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:.75rem;color:var(--muted)}
+.pr-bk{flex:0 0 28px;height:62%;margin:0 -14px;z-index:1;border-radius:0 0 8px 8px;border:1px solid #0b2236;background:#12324A}
+.pr-wk.on{background:#87CEEB;color:var(--deep)}.pr-bk.on{background:#1F7FBF}
+.pr-time label{display:flex;align-items:center;gap:.4rem;font-size:.92rem}
+.pr-time input,.pr-time select{min-height:44px;border-radius:12px;border:1px solid rgba(11,58,91,.2);background:#fff;padding:0 .6rem;font:inherit;color:var(--ink)}
+.pr-time input{width:5.2rem}
+.pr-check{display:flex;align-items:center;gap:.35rem;min-height:44px}
+.pr-check input{width:20px;height:20px}
+.pr-dots{display:flex;gap:6px}.pr-dots span{width:14px;height:14px;border-radius:50%;background:rgba(11,58,91,.15)}.pr-dots span.on{background:var(--blue)}
+.pr-dots span:first-child.on{background:#C2410C}
+.pr-now{font:800 1.3rem Manrope,system-ui,sans-serif;color:var(--deep);min-width:3ch}
+#words-text{white-space:pre-wrap;font:400 1rem/1.7 Lexend,system-ui,sans-serif;margin:0}
+@media (max-width:640px){
+  .pr-keys{grid-template-columns:repeat(4,1fr)}
+  .pr-solfa{grid-template-columns:repeat(4,1fr)}
+  .pr-chords,.pr-shape-grid{grid-template-columns:repeat(3,1fr)}
+  .pr-time{flex-direction:column;align-items:flex-start}
+}
