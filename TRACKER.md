@@ -1,3 +1,7 @@
+## 2026-11-22 — Music icon at vinyl LP speed
+
+- Codex, Ops task 1377. The Fiji flag turns once every 1.8 seconds (33⅓ RPM) during playback. The centred music note stays still, and reduced-motion settings disable the spin.
+
 ## 2026-11-22 — Shared music: playlists, My mixes, shuffle and repeat
 
 Updated shared-music/ to the museum's shared music player (0567407): 433 songs with playlist buttons, My mixes (listeners' own mixes, saved on the device), Shuffle and Repeat off/all/one, songs move on by themselves, and the music note stays still while only the flag turns. Same five files as Fiji-History-Virtual-Museum public/shared-music; no app code changed. Tests: no shared-music tests.
