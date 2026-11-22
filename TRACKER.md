@@ -1,3 +1,7 @@
+## 2026-11-22 — Up Next
+
+Codex claimed Dimau Ops task 1455. Show the upcoming songs, add any song with Play Next, and reorder with Up and Down on phone and desktop while the track keeps playing. Preserve the existing playlist revision and music motion.
+
 ## 2026-11-22 — Roll out the responsive shared playlist menu
 
 - Codex, Ops task 1416. Deploy the verified Museum playlist sidebar and phone picker, song search, My mixes and Go to song. Browsing keeps the playing queue intact. Only the flag spins at 33 1/3 RPM during playback.
