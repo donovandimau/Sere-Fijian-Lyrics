@@ -1,3 +1,7 @@
+## 2026-11-22 — Shared music: My mixes sync to the Dimau account
+
+Updated shared-music/player.mjs and player.css to the museum's shared music player (effe708): the playlist rail and phone picker (#957) and My mixes sync (#960): listeners sign in with the 6-digit email code inside My mixes and their mixes follow them to every Dimau app and device (table public.dimau_music_mixes, own rows only). No app code changed. Tests: no shared-music tests.
+
 ## 2026-11-22 — Roll out the responsive shared playlist menu
 
 - Codex, Ops task 1416. Deploy the verified Museum playlist sidebar and phone picker, song search, My mixes and Go to song. Browsing keeps the playing queue intact. Only the flag spins at 33 1/3 RPM during playback.

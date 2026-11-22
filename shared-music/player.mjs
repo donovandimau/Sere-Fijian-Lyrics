@@ -1,5 +1,5 @@
 import {loadCatalogue,playlists,ALL,OTHER} from './core.mjs';
-// Shared music player: playlists, the listener's own mixes (saved on this device), shuffle and repeat.
+// Shared music player: playlists, the listener's own mixes (on this device, and in their Dimau account once signed in), shuffle and repeat.
 let dialog,audio,shadow,status,list,search,count,title,play,prev,next,retry,badge,origin,chips,mixbar,adder,shuffleBtn,repeatBtn;
 let picker,clearSearch,queueContext,jumpToSong;
 let tracks=[],selected=null,loading=0,attempt=0,buffering=false,lastPlaying=false,current=ALL,history=[],chipKey='',chipShown='',addFor=null,confirmDelete=false,renaming=false;
@@ -13,9 +13,118 @@ let mixes=cleanMixes(store.get(MIXKEY,[]));
 function cleanMixes(value){
   if(!Array.isArray(value))return[];
   return value.filter(m=>m&&typeof m.id==='string'&&/^[a-z0-9-]{1,40}$/.test(m.id)&&typeof m.name==='string'&&m.name.trim()).slice(0,50)
-    .map(m=>({id:m.id,name:m.name.trim().slice(0,40),ids:[...new Set((Array.isArray(m.ids)?m.ids:[]).filter(id=>typeof id==='string'))].slice(0,500)}));
+    .map(m=>({id:m.id,name:m.name.trim().slice(0,40),ids:[...new Set((Array.isArray(m.ids)?m.ids:[]).filter(id=>typeof id==='string'&&/^[a-z0-9][a-z0-9-]{0,79}$/.test(id)))].slice(0,500),updated:Number.isFinite(m.updated)?m.updated:0}));
 }
-const saveMixes=()=>store.set(MIXKEY,mixes);
+// Dimau account sync (22 Nov 2026). The music window keeps its own Dimau session (email + 6-digit code), separate from
+// the site's sign-in, so the two never refresh each other's tokens. Mixes are rows in public.dimau_music_mixes (own rows only).
+const SB='https://xnxmumbvgtmlpenutlii.supabase.co',SBKEY='sb_publishable_WFJ3jKwImNhGdTdrS9W6mg_3CUSUYIM',SESSION='dimau.shared-music.session',GONE='dimau.shared-music.mixes-deleted';
+let session=cleanSession(store.get(SESSION,null)),gone=cleanGone(store.get(GONE,[])),acct={stage:'idle',email:'',note:''},syncTimer=0,syncRun=null,syncAgain=false,accountBox=null;
+function cleanSession(v){return v&&typeof v.access==='string'&&typeof v.refresh==='string'&&Number.isFinite(v.exp)?{access:v.access,refresh:v.refresh,exp:v.exp,email:typeof v.email==='string'?v.email:''}:null;}
+function cleanGone(v){return Array.isArray(v)?v.filter(g=>g&&typeof g.id==='string'&&/^[a-z0-9-]{1,40}$/.test(g.id)&&Number.isFinite(g.updated)).slice(-200).map(g=>({id:g.id,name:String(g.name||'Deleted mix').slice(0,40)||'Deleted mix',updated:g.updated})):[];}
+// Every change stamps the mix and, when signed in, saves it to the account a moment later.
+function saveMixes(changed){if(changed)changed.updated=Date.now();store.set(MIXKEY,mixes);store.set(GONE,gone);schedulePush();}
+function forgetMix(mix){gone=gone.filter(g=>g.id!==mix.id);gone.push({id:mix.id,name:mix.name,updated:Date.now()});mixes=mixes.filter(m=>m.id!==mix.id);saveMixes();}
+function schedulePush(){if(!session)return;clearTimeout(syncTimer);syncTimer=setTimeout(()=>syncMixes(),1200);}
+async function authCall(path,body){
+  const r=await globalThis.fetch(SB+'/auth/v1/'+path,{method:'POST',credentials:'omit',headers:{apikey:SBKEY,'content-type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok){const m=String(j.msg||j.error_description||j.message||'');throw Error(/expired|invalid/i.test(m)?'That code is wrong or has expired. Ask for a new one.':/rate|many/i.test(m)?'Too many tries just now. Wait a minute and try again.':'Sign-in did not work. Check your connection and try again.');}
+  return j;
+}
+function keepSession(j){if(!j?.access_token||!j?.refresh_token)throw Error('Sign-in did not work. Try again.');session={access:j.access_token,refresh:j.refresh_token,exp:Math.floor(Date.now()/1000)+(Number(j.expires_in)||3600),email:j.user?.email||session?.email||acct.email||''};store.set(SESSION,session);}
+function signOut(note=''){session=null;try{globalThis.localStorage.removeItem(SESSION);}catch(_){}acct={stage:'idle',email:'',note};renderAccount();}
+async function accessToken(){
+  if(!session)return null;
+  if(session.exp-60>Date.now()/1000)return session.access;
+  try{keepSession(await authCall('token?grant_type=refresh_token',{refresh_token:session.refresh}));return session.access;}
+  catch(_){signOut('Your sign-in ended. Sign in again to keep your mixes in sync.');return null;}
+}
+async function rest(method,query,body,prefer){
+  const t=await accessToken();if(!t)throw Error('signed-out');
+  const headers={apikey:SBKEY,authorization:'Bearer '+t,'content-type':'application/json'};if(prefer)headers.prefer=prefer;
+  const r=await globalThis.fetch(SB+'/rest/v1/dimau_music_mixes'+query,{method,credentials:'omit',headers,body:body?JSON.stringify(body):undefined});
+  if(r.status===401){signOut('Your sign-in ended. Sign in again to keep your mixes in sync.');throw Error('signed-out');}
+  if(!r.ok)throw Error('sync '+r.status);
+  if(method!=='GET')return null;
+  return r.json();
+}
+const asRow=(m,deleted=false)=>({mix_id:m.id,name:m.name,track_ids:deleted?[]:m.ids,deleted,updated_at:new Date(m.updated||0).toISOString()});
+// Merge this device's mixes with the account: for each mix the newer change wins; deletions travel as tombstones.
+export function mergeMixes(local,deletedHere,remoteRows){
+  const remote=new Map();
+  for(const r of remoteRows||[])if(r&&typeof r.mix_id==='string')remote.set(r.mix_id,{id:r.mix_id,name:String(r.name||'').slice(0,40),ids:Array.isArray(r.track_ids)?r.track_ids:[],deleted:r.deleted===true,updated:Date.parse(r.updated_at)||0});
+  const here=new Map(local.map(m=>[m.id,m])),dead=new Map(deletedHere.map(g=>[g.id,g]));
+  const keep=[],push=[];
+  for(const id of new Set([...here.keys(),...dead.keys(),...remote.keys()])){
+    const L=here.get(id),G=dead.get(id),R=remote.get(id),mine=L?L.updated:G?G.updated:-1;
+    if(!R){if(L){keep.push(L);push.push(asRow(L));}continue;}
+    if(R.updated>mine){if(!R.deleted)keep.push({id,name:R.name||'My mix',ids:R.ids,updated:R.updated});continue;}
+    if(R.updated<mine){if(L){keep.push(L);push.push(asRow(L));}else if(!R.deleted)push.push(asRow(G,true));continue;}
+    if(L&&!R.deleted)keep.push(L);
+  }
+  const order=new Map(local.map((m,i)=>[m.id,i])),rank=m=>order.has(m.id)?order.get(m.id):1e6-m.updated/1e13;
+  keep.sort((a,b)=>rank(a)-rank(b));
+  return{mixes:cleanMixes(keep),push};
+}
+async function syncMixes(){
+  if(!session)return;
+  if(syncRun){syncAgain=true;return syncRun;}
+  syncRun=(async()=>{
+    acct.note='Saving to your Dimau account…';renderAccount();
+    try{
+      const rows=await rest('GET','?select=mix_id,name,track_ids,deleted,updated_at');
+      const merged=mergeMixes(mixes,gone,rows);
+      if(merged.push.length)await rest('POST','?on_conflict=user_id,mix_id',merged.push,'resolution=merge-duplicates,return=minimal');
+      const before=JSON.stringify(mixes);mixes=merged.mixes;gone=[];store.set(MIXKEY,mixes);store.set(GONE,gone);
+      acct.note='Saved to your Dimau account';
+      if(dialog&&JSON.stringify(mixes)!==before){if(current===MIXES&&mixes.length)current='mix:'+mixes[0].id;chipKey='';render();}
+    }catch(e){if(e.message!=='signed-out')acct.note='Could not reach your Dimau account. Your mixes are safe on this device and will sync next time.';}
+    finally{syncRun=null;renderAccount();if(syncAgain){syncAgain=false;syncMixes();}}
+  })();
+  return syncRun;
+}
+// The sign-in panel inside My mixes: email, then the 6-digit code from the Dimau sign-in email.
+function renderAccount(){
+  if(!accountBox)return;
+  accountBox.replaceChildren();
+  if(session){
+    const line=el('p',undefined,'hint');line.append(el('strong','Synced to your Dimau account'),document.createTextNode(session.email?' · '+session.email:''));
+    accountBox.append(line);
+    if(acct.note)accountBox.append(el('p',acct.note,'account-note'));
+    accountBox.append(button('Sign out of music sync',()=>signOut('Signed out. Your mixes stay on this device.'),'ghost-link'));
+    return;
+  }
+  if(acct.stage==='idle'){
+    accountBox.append(el('p','Sign in with your Dimau account to keep your mixes on every Dimau app and device.','hint'));
+    if(acct.note)accountBox.append(el('p',acct.note,'account-note'));
+    accountBox.append(button('Sign in to sync',()=>{acct={stage:'email',email:'',note:''};renderAccount();accountBox.querySelector('input')?.focus();},'primary'));
+    return;
+  }
+  const form=el('form',undefined,'mix-form account-form'),input=el('input'),go=el('button',undefined,'primary');go.type='submit';
+  if(acct.stage==='email'){
+    input.type='email';input.autocomplete='email';input.required=true;input.maxLength=254;input.placeholder='you@example.com';input.setAttribute('aria-label','Email for your Dimau account');input.value=acct.email;go.textContent='Send code';
+  }else{
+    input.type='text';input.inputMode='numeric';input.autocomplete='one-time-code';input.required=true;input.maxLength=6;input.pattern='[0-9]{6}';input.placeholder='123456';input.setAttribute('aria-label','6-digit code from the email');go.textContent='Sign in';
+  }
+  form.append(input,go,button('Cancel',()=>{acct={stage:'idle',email:'',note:''};renderAccount();}));
+  if(acct.stage==='code')accountBox.append(el('p',`We sent a 6-digit code to ${acct.email}. Type it here.`,'hint'));
+  accountBox.append(form);
+  if(acct.note)accountBox.append(el('p',acct.note,'account-note'));
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();const value=input.value.trim();go.disabled=true;
+    try{
+      if(acct.stage==='email'){
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))throw Error('Type a full email address.');
+        await authCall('otp',{email:value,create_user:true,data:{app:'shared-music'}});acct={stage:'code',email:value,note:''};
+      }else{
+        if(!/^\d{6}$/.test(value))throw Error('The code is 6 numbers.');
+        keepSession(await authCall('verify',{type:'email',email:acct.email,token:value}));acct={stage:'idle',email:'',note:''};
+        status.textContent='Signed in. Your mixes now follow you to every Dimau app.';syncMixes();
+      }
+    }catch(err){acct.note=err.message;}
+    renderAccount();accountBox.querySelector('input')?.focus();
+  });
+}
 const mixOf=key=>key?.startsWith('mix:')?mixes.find(m=>'mix:'+m.id===key):null;
 const byId=id=>tracks.find(t=>t.id===id);
 function inList(name=current){
@@ -154,12 +263,13 @@ function renderChips(){
 function newMixForm(onDone,label='New mix'){
   const form=el('form',undefined,'mix-form'),input=el('input');input.type='text';input.maxLength=40;input.required=true;input.placeholder='Name your mix';input.setAttribute('aria-label','Mix name');input.value=`My mix ${mixes.length+1}`;
   const go=el('button',label,'primary');go.type='submit';form.append(input,go);
-  function submit(){const name=input.value.trim().slice(0,40);if(!name)return;if(mixes.length>=50){status.textContent='You can keep up to 50 mixes.';return;}const mix={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name,ids:[]};mixes.push(mix);saveMixes();onDone(mix);}
+  function submit(){const name=input.value.trim().slice(0,40);if(!name)return;if(mixes.length>=50){status.textContent='You can keep up to 50 mixes.';return;}const mix={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name,ids:[],updated:0};mixes.push(mix);saveMixes(mix);onDone(mix);}
   form.addEventListener('submit',e=>{e.preventDefault();submit();});return form;
 }
 function renderMixbar(){
   const mix=mixOf(current),show=current===MIXES||!!mix;mixbar.hidden=!show;mixbar.replaceChildren();if(!show)return;
-  if(!mixes.length){mixbar.append(el('p','Make your own mix of songs from any playlist. Your mixes are saved on this device.','hint'),newMixForm(m=>pickList('mix:'+m.id),'Create mix'));return;}
+  accountBox=el('div',undefined,'account');accountBox.setAttribute('aria-live','polite');mixbar.append(accountBox);renderAccount();
+  if(!mixes.length){mixbar.append(el('p','Make your own mix of songs from any playlist. Your mixes are saved on this device, and in your Dimau account when you sign in.','hint'),newMixForm(m=>pickList('mix:'+m.id),'Create mix'));return;}
   const row=el('div',undefined,'mix-tabs');row.setAttribute('role','group');row.setAttribute('aria-label','Your mixes');
   for(const m of mixes){const b=button(m.name,()=>pickList('mix:'+m.id),'chip small');b.setAttribute('aria-pressed',String(mix?.id===m.id));row.append(b);}
   row.append(button('+ New mix',()=>{renaming=false;mixbar.querySelector('.mix-tools')?.replaceChildren(newMixForm(m=>pickList('mix:'+m.id),'Create mix'));mixbar.querySelector('.mix-tools input')?.focus();},'chip small ghost'));
@@ -168,13 +278,13 @@ function renderMixbar(){
   if(renaming){
     const form=el('form',undefined,'mix-form'),input=el('input');input.type='text';input.maxLength=40;input.value=mix.name;input.setAttribute('aria-label','New name for this mix');
     const save=el('button','Save name','primary');save.type='submit';form.append(input,save,button('Cancel',()=>{renaming=false;renderMixbar();}));
-    form.addEventListener('submit',e=>{e.preventDefault();const name=input.value.trim().slice(0,40);if(name){mix.name=name;saveMixes();}renaming=false;render();});tools.append(form);return;
+    form.addEventListener('submit',e=>{e.preventDefault();const name=input.value.trim().slice(0,40);if(name){mix.name=name;saveMixes(mix);}renaming=false;render();});tools.append(form);return;
   }
   tools.append(el('span',mix.ids.length?`${mix.ids.length} song${mix.ids.length===1?'':'s'} · tap + on any song to add more`:'Empty mix · open any playlist and tap + on a song to add it here','hint'),
     button('Rename',()=>{renaming=true;renderMixbar();mixbar.querySelector('.mix-tools input')?.focus();}),
-    button(confirmDelete?'Tap again to delete':'Delete mix',()=>{if(!confirmDelete){confirmDelete=true;renderMixbar();mixbar.querySelector('.danger')?.focus();return;}mixes=mixes.filter(m=>m.id!==mix.id);saveMixes();confirmDelete=false;pickList(mixes.length?'mix:'+mixes[0].id:MIXES);},'danger'));
+    button(confirmDelete?'Tap again to delete':'Delete mix',()=>{if(!confirmDelete){confirmDelete=true;renderMixbar();mixbar.querySelector('.danger')?.focus();return;}forgetMix(mix);confirmDelete=false;pickList(mixes.length?'mix:'+mixes[0].id:MIXES);},'danger'));
 }
-function toggleInMix(mix,track){const i=mix.ids.indexOf(track.id);if(i>=0)mix.ids.splice(i,1);else if(mix.ids.length<500)mix.ids.push(track.id);saveMixes();}
+function toggleInMix(mix,track){const i=mix.ids.indexOf(track.id);if(i>=0)mix.ids.splice(i,1);else if(mix.ids.length<500)mix.ids.push(track.id);saveMixes(mix);}
 function renderAdder(){
   adder.replaceChildren();adder.hidden=!addFor;if(!addFor)return;
   const head=el('div',undefined,'adder-head');head.append(el('strong',`Add “${addFor.title}” to a mix`),button('Done',()=>{const id=addFor.id;addFor=null;renderAdder();[...list.querySelectorAll('[data-add]')].find(b=>b.dataset.add===id)?.focus();}));adder.append(head);
@@ -281,5 +391,5 @@ function create(){
 }
 export function open({opener=document.activeElement}={}){
   if(!dialog)create();if(dialog.open)return;
-  origin=opener;if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');dialog.querySelector('.close').focus();load();
+  origin=opener;if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');dialog.querySelector('.close').focus();load().then(()=>{if(session)syncMixes();});
 }
