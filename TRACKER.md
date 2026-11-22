@@ -1,3 +1,7 @@
+## 2026-11-22 — Up Next
+
+Codex claimed Dimau Ops task 1455. Show the upcoming songs, add any song with Play Next, and reorder with Up and Down on phone and desktop while the track keeps playing. Preserve the existing playlist revision and music motion.
+
 ## 2026-11-22 — Shared music: My mixes sync to the Dimau account
 
 Updated shared-music/player.mjs and player.css to the museum's shared music player (effe708): the playlist rail and phone picker (#957) and My mixes sync (#960): listeners sign in with the 6-digit email code inside My mixes and their mixes follow them to every Dimau app and device (table public.dimau_music_mixes, own rows only). No app code changed. Tests: no shared-music tests.
