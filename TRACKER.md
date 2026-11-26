@@ -35,6 +35,7 @@ Added TRACKER.md merge=union while preserving other Git attributes. Git attribut
 - Scope: canonical repository and existing public tool only; preserve all songs, local media, transcription and export behavior.
 
 ## Current state
+- 2026-11-26 Claude: Dimau Pulse button added (pulse.dimau-fintech.com/embed.js: alerts, weather, GBP converter, economy signals). Security policy allows pulse.dimau-fintech.com where one is set. Donovan: "Integrate features into all my sites".
 - Status: Ready to Test — live four-song Sere catalogue
 - Blocker: full catalogue conversion incomplete (see Ops Room card)
 
