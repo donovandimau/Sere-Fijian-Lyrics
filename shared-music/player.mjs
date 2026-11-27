@@ -84,6 +84,47 @@ async function syncMixes(){
   return syncRun;
 }
 // The sign-in panel inside My mixes: email, then the 6-digit code from the Dimau sign-in email.
+const sessionLineIndexes = new Map();
+  function nextSessionLine(bucket, lines, appName) {
+    const key = 'dimau.session-lines.v2.' + appName + '.' + bucket;
+    let index = sessionLineIndexes.get(key) || 0;
+    try {
+      const stored = Number(localStorage.getItem(key));
+      if (Number.isSafeInteger(stored) && stored >= 0 && localStorage.getItem(key) !== null) index = stored;
+    } catch (_) {}
+    const next = (index + 1) % lines.length;
+    sessionLineIndexes.set(key, next);
+    try { localStorage.setItem(key, String(next)); } catch (_) {}
+    return lines[index % lines.length];
+  }
+  function playfulFarewell(appName, hour = new Date().getHours(), workSaved = false) {
+    const lines = [
+      'Logged out. Off to pretend that you did some hard work and need a break. 🌿',
+      workSaved ? 'Session closed. Your work is saved; your excuses are getting better. 🚶' : 'Session closed. Your excuses are getting better. 🚶',
+      'Signed out. The server is going to lie down and recover for a bit. 🛌',
+      'Logging off. Whatever you just did, we all saw it. 🤐',
+      'Session ended. Go forth and ignore important things elsewhere. 👀',
+      "Out for now. Don't worry, we didn't complain while we did all the work for you. 🔋",
+      "Logged out. You're free—until you start getting bored and nosey again. 🔔",
+      'Session closed. Go drink some water. I never said grog or beer. 💧'
+    ];
+    if (hour < 5) lines.push('It’s past midnight. Are we going to pretend to do some real work now? 🌙');
+    if (hour < 5 || hour >= 22) {
+      lines.push('Logging out late. Go to sleep before your eyes start looking like you drank grog all night. 🛌');
+      return nextSessionLine(hour < 5 ? 'after-midnight' : 'evening', lines, appName);
+    }
+    return nextSessionLine('day', lines, appName);
+  }
+  function arrivalAside(appName, hour = new Date().getHours()) {
+    const lines = ['', 'Signed in. You again. We were just planning to escape from you. 🫠',
+      '', "Authenticated. Somehow we're still doing this. Give us a break. ⚙️"];
+    if (hour >= 22 || hour < 5) {
+      lines.push('Signed in late. Brave of you to trust your judgment at this hour. 🫠');
+      return nextSessionLine('night-arrival', lines, appName);
+    }
+    return nextSessionLine('day-arrival', lines, appName);
+  }
+
 function renderAccount(){
   if(!accountBox)return;
   accountBox.replaceChildren();
@@ -91,7 +132,19 @@ function renderAccount(){
     const line=el('p',undefined,'hint');line.append(el('strong','Synced to your Dimau account'),document.createTextNode(session.email?' · '+session.email:''));
     accountBox.append(line);
     if(acct.note)accountBox.append(el('p',acct.note,'account-note'));
-    accountBox.append(button('Sign out of music sync',()=>signOut('Signed out. Your mixes stay on this device.'),'ghost-link'));
+    const leave = button('Sign out of music sync', () => {
+      const cancel = button('Cancel', () => {
+        renderAccount();
+        accountBox.querySelector('button')?.focus();
+      }, 'ghost-link');
+      const confirm = button('Sign out', () => {
+        signOut(playfulFarewell('Dimau Music') + ' Your mixes stay on this device.');
+      }, 'ghost-link');
+      const question = el('p', 'Sign out of music sync? Your mixes stay on this device.', 'hint');
+      accountBox.replaceChildren(question, cancel, confirm);
+      cancel.focus();
+    }, 'ghost-link');
+    accountBox.append(leave);
     return;
   }
   if(acct.stage==='idle'){
@@ -119,7 +172,7 @@ function renderAccount(){
       }else{
         if(!/^\d{6}$/.test(value))throw Error('The code is 6 numbers.');
         keepSession(await authCall('verify',{type:'email',email:acct.email,token:value}));acct={stage:'idle',email:'',note:''};
-        status.textContent='Signed in. Your mixes now follow you to every Dimau app.';syncMixes();
+        status.textContent=(arrivalAside('Dimau Music') || 'Bula! It’s good to see you.') + ' Music sync is on.';syncMixes();
       }
     }catch(err){acct.note=err.message;}
     renderAccount();accountBox.querySelector('input')?.focus();
