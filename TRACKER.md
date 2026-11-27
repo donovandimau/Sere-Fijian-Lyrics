@@ -72,3 +72,5 @@ Added TRACKER.md merge=union while preserving other Git attributes. Git attribut
 - 2026-11-04 — Codex — Completed scoped public preview metadata correction. Completed canonical and matching X preview details while retaining the original app-specific 1200 by 630 artwork and all page body bytes. Source whitespace checks pass; host gates and exact hosted evidence follow on this revision’s PR.
 
 - 2026-11-13 — Claude — Switched links to sister apps from *.vercel.app to their dimau-fintech.com addresses (security rules keep both).
+
+- 2026-11-27 (Claude): DONE — install-to-phone (manifest + icons) and shared Share button (dimau-share.js).
